@@ -1,0 +1,18 @@
+
+Osquid:S1481]"1Remove this unused "sprite_sheet" local variable.(¶çïÔ8¢ÌÂ±ë,
+Msquid:S1948!"*Make "spawnner" transient or serializable.(´çš•üÿÿÿÿ8ÏôòÏğ,
+Msquid:S1948#"*Make "keyInput" transient or serializable.(ùóã£úÿÿÿÿ8ÏôòÏğ,
+Usquid:S1481¯"1Remove this unused "OPTIMAL_TIME" local variable.(Å»š±ùÿÿÿÿ8®¹’áì,
+Bsquid:S3010b"$Remove this assignment of "handler".(©›çÚ8¦ñîê,
+Qsquid:S1948&".Make "testJoyStick" transient or serializable.(·å½ïùÿÿÿÿ8ÏôòÏğ,
+Isquid:S00108Ë")Either remove or fill this block of code.(Şá›¨8öñ®í,
+Esquid:S3010q""Remove this assignment of "fern$".(ï‚Õüÿÿÿÿ8ş€Âìê,
+Csquid:S3010`" Remove this assignment of "hud".(ş™ñ’øÿÿÿÿ8•ğ¬îê,
+Isquid:S1948""&Make "menu" transient or serializable.(ùŠéçùÿÿÿÿ8«¶ÕÑğ,
+Isquid:S1181ı"%Catch Exception instead of Throwable.(‡˜ÚÚøÿÿÿÿ8¸„áì,
+Hsquid:S3010t"*Remove this assignment of "clientManager".(‰Æ×®8Ø™ Ğğ,
+=squid:S2119„"Save and re-use this "Random".(¡Å”¦8¨Ø‚Ğğ,
+Esquid:S1948"(Make "thread" transient or serializable.(â£Ÿ48ş€Âìê,
+Gsquid:S1659"$Declare "HEIGHT" on a separate line.(îáúÏÿÿÿÿÿ8ş€Âìê,
+Jsquid:S1481¬"+Remove this unused "frames" local variable.(ˆ¥¨è8í·ÂŒë,
+psquid:S00117]"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶çïÔ8¢ÌÂ±ë,

@@ -1,0 +1,6 @@
+
+Rsquid:S1066B"/Merge this if statement with the enclosing one.(Îšÿƒùÿÿÿÿ8‰ìÏğ,
+dsquid:S2142d"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8Éÿ›ë,
+Gsquid:S1481{")Remove this unused "time" local variable.(¨Åöê8Æ°õ‘ì,
+Ksquid:S1172 "-Remove this unused method parameter "server".(£¯ü“8éİÅ±ë,
+ªsquid:S2681K"†This line will not be executed conditionally; only the first line of this 2-line block will be. The rest will execute unconditionally.(´ûæÚüÿÿÿÿ8¿àøĞğ,
