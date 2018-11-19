@@ -32,7 +32,7 @@ import java.util.List;
  * More on the blog: http://theuzo007.wordpress.com/2012/09/02/joystick-in-java-with-jinput
  *
  */
-
+@SuppressWarnings("unused,WeakerAccess")
 public class JInputJoystick {
 
     private Controller controller;
@@ -43,9 +43,6 @@ public class JInputJoystick {
 
     // Controller buttons states
     private ArrayList<Boolean> buttonsValues;
-
-    private int controllerArrayIndex;
-    private int controllerTypeIndex;
 
     /**
      * Creates a controller, of type that has been given.
@@ -96,6 +93,7 @@ public class JInputJoystick {
         this.buttonsValues = new ArrayList<>();
     }
 
+
     /**
      * Save first founded controller of given type.
      *
@@ -108,8 +106,7 @@ public class JInputJoystick {
         List<Controller> joysticks = new ArrayList<>();
 
         for(Controller controllerCheck : controllers) {
-            if(controllerCheck != null)
-            if (controllerCheck.getType() == controllerType_1 || (controllerType_2 != null && controllerCheck.getType() == controllerType_2)) {
+            if((controllerCheck != null) && (controllerCheck.getType() == controllerType_1 || (controllerType_2 != null && controllerCheck.getType() == controllerType_2)) ) {
                 joysticks.add(controllerCheck);
             }
         }
@@ -129,15 +126,14 @@ public class JInputJoystick {
 
         int upIndex = 0;
         for(int i = 0; i < controllers.length; i++) {
-
             Controller joystick = controllers[i];
 
             if(joysticks.contains(joystick)) {
 
-                if (upIndex < index) continue;
+                if (upIndex < index || joystick.getType() != controllerType_1 && controllerType_2 == null) continue;
 
-                if(joystick.getType() != controllerType_1 && controllerType_2 == null) continue;
-
+                int controllerArrayIndex;
+                int controllerTypeIndex;
                 if(joystick.getType() != controllerType_1 && joystick.getType() == controllerType_2) {
                     controller = joystick;
                     controllerArrayIndex = i;
@@ -149,8 +145,6 @@ public class JInputJoystick {
                     controllerArrayIndex = i;
                     controllerTypeIndex = index;
                 }
-
-
 
             }
         }
@@ -230,12 +224,10 @@ public class JInputJoystick {
 
         Component[] components = controller.getComponents();
 
-        for(int i=0; i < components.length; i++) {
-            Component component = components[i];
-
+        for (Component component : components) {
             // Add states of the buttons
-            if(component.getName().contains("Button"))
-                if(component.getPollData() == 1.0f)
+            if (component.getName().contains("Button"))
+                if (component.getPollData() == 1.0f)
                     buttonsValues.add(Boolean.TRUE);
                 else
                     buttonsValues.add(Boolean.FALSE);
@@ -255,10 +247,7 @@ public class JInputJoystick {
     {
         Component component = controller.getComponent(identifier);
 
-        if(component != null)
-            return true;
-        else
-            return false;
+        return component != null;
     }
 
 
@@ -291,7 +280,7 @@ public class JInputJoystick {
      *
      * @return Array list of states of all controller buttons.
      */
-    public ArrayList<Boolean> getButtonsValues()
+    public List<Boolean> getButtonsValues()
     {
         return buttonsValues;
     }
@@ -330,9 +319,8 @@ public class JInputJoystick {
     public int getXAxisPercentage()
     {
         float xAxisValue = this.getXAxisValue();
-        int xAxisValuePercentage = (int)((2 - (1 - xAxisValue)) * 100) / 2;
 
-        return xAxisValuePercentage;
+        return (int)((2 - (1 - xAxisValue)) * 100) / 2;
     }
 
 
@@ -358,9 +346,8 @@ public class JInputJoystick {
     public int getYAxisPercentage()
     {
         float yAxisValue = this.getYAxisValue();
-        int yAxisValuePercentage = (int)((2 - (1 - yAxisValue)) * 100) / 2;
 
-        return yAxisValuePercentage;
+        return (int)((2 - (1 - yAxisValue)) * 100) / 2;
     }
 
 
@@ -386,9 +373,9 @@ public class JInputJoystick {
     public int getZRotationPercentage()
     {
         float zRotation = this.getZRotationValue();
-        int zRotationValuePercentage = (int)((2 - (1 - zRotation)) * 100) / 2;
 
-        return zRotationValuePercentage;
+        return (int)((2 - (1 - zRotation)) * 100) / 2;
+
     }
 
 
@@ -442,9 +429,8 @@ public class JInputJoystick {
     public int getXRotationPercentage()
     {
         float xRotationValue = this.getXRotationValue();
-        int xRotationValuePercentage = (int)((2 - (1 - xRotationValue)) * 100) / 2;
 
-        return xRotationValuePercentage;
+        return (int)((2 - (1 - xRotationValue)) * 100) / 2;
     }
 
 
@@ -470,9 +456,8 @@ public class JInputJoystick {
     public int getYRotationPercentage()
     {
         float yRotationValue = this.getYRotationValue();
-        int yRotationValuePercentage = (int)((2 - (1 - yRotationValue)) * 100) / 2;
 
-        return yRotationValuePercentage;
+        return (int)((2 - (1 - yRotationValue)) * 100) / 2;
     }
 
 
