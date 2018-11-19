@@ -5,6 +5,7 @@ class Main {
     public static void main(String[] args) {
         Server server = new Server(2000);
         Thread thread = new Thread(server);
+        server.setThread(thread);
         thread.start();
     }
 

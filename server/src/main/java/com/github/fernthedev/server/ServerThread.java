@@ -131,6 +131,7 @@ public class ServerThread implements Runnable {
             }
         }, 0, 1000);
 
+        System.out.println(timer + " " + isRunning() + " " + clientPlayer.isConnected());
 
         while (isRunning() && clientPlayer.isConnected()) {
 

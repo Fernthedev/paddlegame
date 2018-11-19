@@ -12,6 +12,7 @@ import com.github.fernthedev.universal.UniversalHandler;
 import com.github.fernthedev.universal.entity.Ball;
 import com.github.fernthedev.universal.entity.EntityPlayer;
 import com.github.fernthedev.universal.entity.MenuParticle;
+import io.github.fernthedev.secondgame.main.UI.Menu;
 import io.github.fernthedev.secondgame.main.inputs.joystick.JoystickHandler;
 import io.github.fernthedev.secondgame.main.inputs.keyboard.KeyInput;
 import io.github.fernthedev.secondgame.main.netty.client.Client;
@@ -28,14 +29,18 @@ public class Game extends Canvas implements Runnable {
 
     private Thread thread;
 
+    public static Graphics g;
+
     private static Handler handler;
     private final Random r;
     private static HUD hud;
     private final Spawn spawnner;
-    private final Menu menu;
+    private static io.github.fernthedev.secondgame.main.UI.Menu menu;
     private final KeyInput keyInput;
 
     private EntityPlayer oldPlayer = UniversalHandler.mainPlayer;
+
+
 
 
     private JoystickHandler testJoyStick;
@@ -102,7 +107,7 @@ public class Game extends Canvas implements Runnable {
 
         testJoyStick = new JoystickHandler(this);
 
-        menu = new Menu(this,handler,hud);
+        menu = new io.github.fernthedev.secondgame.main.UI.Menu(this,handler,hud);
         System.out.println("LWJGL Version " + Version.getVersion() + " is working.");
         keyInput = new KeyInput(handler,this);
 
@@ -236,7 +241,7 @@ public class Game extends Canvas implements Runnable {
 
                     if(UniversalHandler.mainPlayer != null && EntityPlayer.isTheSame(oldPlayer,UniversalHandler.mainPlayer)){
                         String[] differences = EntityPlayer.getDifference(UniversalHandler.mainPlayer,oldPlayer);
-                        System.out.println(differences[0] + " old is " + differences[1]);
+                        //System.out.println(differences[0] + " old is " + differences[1]);
                         oldPlayer = UniversalHandler.mainPlayer;
                     }
 
@@ -292,7 +297,7 @@ public class Game extends Canvas implements Runnable {
             return;
         }
 
-        Graphics g = bs.getDrawGraphics();
+         g = bs.getDrawGraphics();
 
         g.setColor(Color.black);
         g.fillRect(0,0,WIDTH,HEIGHT);
@@ -320,6 +325,8 @@ public class Game extends Canvas implements Runnable {
         g.dispose();
         bs.show();
     }
+
+
 
     /**
      * CREATING A BOX/LIMIT FOR A VARIABLE
@@ -359,6 +366,10 @@ public class Game extends Canvas implements Runnable {
         thread.start();
         UniversalHandler.threads.add(thread);
         System.out.println(UniversalHandler.threads.size() + " threads");
+    }
+
+    public static Menu getMenu() {
+        return menu;
     }
 
     public static HUD getHud() {

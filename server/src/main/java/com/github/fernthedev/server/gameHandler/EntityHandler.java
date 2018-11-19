@@ -68,7 +68,7 @@ public class EntityHandler extends ThingHandler implements Runnable {
             //clientPlayer.sendObject(new SetCurrentPlayer(universalPlayer));
 
 
-            System.out.println("Attempting to update info " + universalPlayer);
+            //System.out.println("Attempting to update info " + universalPlayer);
 
             clientPlayer.isChanged = true;
         }

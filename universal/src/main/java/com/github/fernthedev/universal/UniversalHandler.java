@@ -14,7 +14,7 @@ public class UniversalHandler {
 
     public static final int WIDTH = 640,HEIGHT =  WIDTH / 12*9;
 
-    public static int tickWait = 5;
+    public static int tickWait = 15;
 
     public static boolean running = false;
 

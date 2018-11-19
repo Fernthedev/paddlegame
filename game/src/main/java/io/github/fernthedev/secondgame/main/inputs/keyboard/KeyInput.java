@@ -9,6 +9,8 @@ import com.github.fernthedev.packets.PlayerUpdates.SendToGetInfo;
 import com.github.fernthedev.universal.UniversalHandler;
 import io.github.fernthedev.secondgame.main.Game;
 import io.github.fernthedev.secondgame.main.Handler;
+import io.github.fernthedev.secondgame.main.UI.MouseOverUI;
+import io.github.fernthedev.secondgame.main.UI.TextOverBox;
 import io.github.fernthedev.secondgame.main.inputs.InputHandler;
 import io.github.fernthedev.secondgame.main.inputs.InputType;
 
@@ -22,6 +24,10 @@ public class KeyInput extends KeyAdapter {
 
     private boolean toUpdate = false;
     private Game game;
+
+    private int hold = 0;
+
+    private static KeyEvent lastKeyEvent;
 
     public KeyInput(Handler handler, Game game) {
         this.game = game;
@@ -37,10 +43,38 @@ public class KeyInput extends KeyAdapter {
         }*/
     }
 
+    public void checkKeyBox(KeyEvent e) {
+        if(e == null) return;
+        int key = e.getKeyCode();
+        TextOverBox textOverBox = MouseOverUI.isTextBoxSelected();
+
+        if(textOverBox != null && textOverBox.isSelected()) {
+            //System.out.println("Setting key");
+            if (key == KeyEvent.VK_BACK_SPACE && textOverBox.getText().length() > 0) {
+                textOverBox.setText(textOverBox.getText().substring(0, textOverBox.getText().length() - 1));
+                return;
+            }
+            char keyText = e.getKeyChar();
+
+            String keyCheck = "" + keyText;
+            if (keyCheck.matches("[a-zA-Z-0-9]+") || keyCheck.equals(" ") || keyCheck.equals(".")) {
+
+               // System.out.println(textOverBox.getText() + keyText);
+
+                textOverBox.setText(textOverBox.getText() + keyText);
+            }
+        }
+    }
+
     public void keyPressed(KeyEvent e) {
         InputHandler.inputType = InputType.KEYBOARD;
         //System.out.println("Some key pressed ");
         int key = e.getKeyCode();
+
+        lastKeyEvent = e;
+
+        checkKeyBox(e);
+
         if (UniversalHandler.mainPlayer != null) {
 
             // System.out.println(GamemainPlayer.getObjectID() + " " + GAME.mainPlayer.getObjectID());
@@ -94,6 +128,8 @@ public class KeyInput extends KeyAdapter {
         int key = e.getKeyCode();
         //System.out.println(key);
 
+        hold = 0;
+
         //KEY EVENTS FOR PLAYER 1
         if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) keyDown[0] = false;
         if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) keyDown[1] = false;
@@ -106,6 +142,9 @@ public class KeyInput extends KeyAdapter {
 
         // System.out.println("Thing! " + gameObjectList.size());
 
+        hold++;
+
+        if(hold >= 50) checkKeyBox(lastKeyEvent);
 
         if (UniversalHandler.mainPlayer != null) {
             

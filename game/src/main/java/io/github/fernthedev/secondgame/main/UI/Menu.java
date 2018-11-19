@@ -1,12 +1,14 @@
-package io.github.fernthedev.secondgame.main;
+package io.github.fernthedev.secondgame.main.UI;
 
 import com.github.fernthedev.server.Server;
-import com.github.fernthedev.server.gameHandler.ServerGameObject;
 import com.github.fernthedev.universal.GameObject;
 import com.github.fernthedev.universal.ID;
 import com.github.fernthedev.universal.UniversalHandler;
 import com.github.fernthedev.universal.entity.Ball;
 import com.github.fernthedev.universal.entity.EntityPlayer;
+import io.github.fernthedev.secondgame.main.Game;
+import io.github.fernthedev.secondgame.main.HUD;
+import io.github.fernthedev.secondgame.main.Handler;
 import io.github.fernthedev.secondgame.main.netty.client.Client;
 
 import java.awt.*;
@@ -17,18 +19,27 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("EmptyMethod")
-class Menu extends MouseAdapter {
+public class Menu extends MouseAdapter {
 
     private final Handler handler;
     private final Random r = new Random();
     private final HUD hud;
 
-    private static List<MouseOverUI> mouseOverUIList = new ArrayList<>();
+    private List<MouseOverUI> keepUIs = new ArrayList<>();
+
+    private Game.STATE lastGameState;
+
+    private int dots = 0;
+    int ticked = 0;
 
     public void render(Graphics g) {
         MouseOverUI button;
+
+
+
+
         if(Game.gameState == Game.STATE.MENU) {
-            mouseOverUIList = new ArrayList<>();
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
             Font fnt = new Font("arial", Font.BOLD, 50);
             Font fnt2 = new Font("arial", Font.BOLD, 30);
 
@@ -43,14 +54,13 @@ class Menu extends MouseAdapter {
 
             button = new MouseOverUI(g,210,150,200,64, Game.STATE.MENU) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.GAME;
                     startGame();
                 }
             };
 
             button.drawString("Play",270,190);
-            mouseOverUIList.add(button);
 
 
 
@@ -62,41 +72,40 @@ class Menu extends MouseAdapter {
 
             button = new MouseOverUI(g, 210, 70, 200, 64, Game.STATE.MENU) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.MULTIPLAYER;
                 }
             };
             button.drawString("MULTIPLAYER",230,110);
-            mouseOverUIList.add(button);
 
 
             button = new MouseOverUI(g,210,250,200,64, Game.STATE.MENU) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.HELP;
                 }
             };
 
             button.drawString("HELP",270,290);
-            mouseOverUIList.add(button);
+
 
            // g.drawRect(210, 250, 200, 64);
        //     g.drawString("HELP", 270, 290);
 
             button = new MouseOverUI(g,210,350,200,64, Game.STATE.MENU) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     System.exit(0);
                 }
             };
             button.drawString("Quit",270,390);
-            mouseOverUIList.add(button);
+
         //    g.drawRect(210, 350, 200, 64);
         //    g.drawString("Quit", 270, 390);
 
 
         }else if(Game.gameState == Game.STATE.HELP) {
-            mouseOverUIList = new ArrayList<>();
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
 
             Font fnt = new Font("arial", Font.BOLD, 50);
             Font fnt2 = new Font("arial", Font.BOLD, 30);
@@ -113,17 +122,17 @@ class Menu extends MouseAdapter {
 
             button = new MouseOverUI(g,210,350,200,64, Game.STATE.HELP) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.MENU;
                 }
             };
             button.drawString("Back",270,390);
-            mouseOverUIList.add(button);
+
 
            // /g.drawRect(210, 350, 200, 64);
           //  g.drawString("Back", 270, 390);
         }else if(Game.gameState == Game.STATE.END) {
-            mouseOverUIList = new ArrayList<>();
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
 
             Font fnt = new Font("arial", Font.BOLD, 50);
             Font fnt2 = new Font("arial", Font.BOLD, 30);
@@ -142,7 +151,7 @@ class Menu extends MouseAdapter {
 
             button = new MouseOverUI(g,210,350,200,64, Game.STATE.END) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.MENU;
                     hud.setLevel(1);
                     hud.setScore(0);
@@ -151,13 +160,13 @@ class Menu extends MouseAdapter {
 
             button.drawString("Try again",245,390);
 
-            mouseOverUIList.add(button);
+
            // g.drawRect(210, 350, 200, 64);
         //    g.drawString("Try Again", 245, 390);
 
 
         }else if (Game.gameState == Game.STATE.MULTIPLAYER) {
-            mouseOverUIList = new ArrayList<>();
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
 
             Font fnt = new Font("arial", Font.BOLD, 50);
             Font fnt2 = new Font("arial", Font.BOLD, 30);
@@ -171,23 +180,38 @@ class Menu extends MouseAdapter {
 
             button = new MouseOverUI(g,210,250,200,64,Game.STATE.MULTIPLAYER) {
                 @Override
-                void onClick() {
-                    Game.gameState = Game.STATE.JOINING;
-                    startGame();
+                public void onClick() {
+                    Game.gameState = Game.STATE.GETTING_CONNECT;
+
+
+                    /*startGame();
 
                     Client client = new Client("localhost",2000);
                     Thread thread = new Thread(client);
 
                     thread.start();
-                    UniversalHandler.threads.add(thread);
+                    UniversalHandler.threads.add(thread);*/
+
+
                 }
             };
 
             button.drawString("Join");
 
+
+            button = new MouseOverUI(g,210,160,200,64, Game.gameState) {
+                @Override
+                public void onClick() {
+                    Game.gameState = Game.STATE.MENU;
+                }
+            };
+            button.drawString("Back");
+
+
+
             button = new MouseOverUI(g,210,350,200,64, Game.STATE.MULTIPLAYER) {
                 @Override
-                void onClick() {
+                public void onClick() {
                     Game.gameState = Game.STATE.HOSTING;
                     System.out.println(Game.gameState + "\n");
                     startGame();
@@ -195,9 +219,10 @@ class Menu extends MouseAdapter {
                     UniversalHandler.isServer = true;
 
                     Server server = new Server(2000);
-                    server.setPlayerStarter(ServerGameObject.getObjectType(new ServerGameObject(UniversalHandler.mainPlayer)));
+                    server.setPlayerStarter(UniversalHandler.mainPlayer);
 
                     Thread thread = new Thread(server);
+                    server.setThread(thread);
                     thread.start();
                     UniversalHandler.threads.add(thread);
 
@@ -207,11 +232,91 @@ class Menu extends MouseAdapter {
                 }
             };
             button.drawString("Host",270,390);
-            //mouseOverUIList.add(button);
 
-        } else if(Game.gameState == Game.STATE.JOINING) {
+
+        } else if(Game.gameState == Game.STATE.GETTING_CONNECT) {
+
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
+
+            Font fnt = new Font("arial", Font.BOLD, 50);
+            Font fnt2 = new Font("arial", Font.BOLD, 30);
+
+            g.setFont(fnt);
+            g.setColor(Color.WHITE);
+            g.drawString("ADDRESS", 240, 70);
+
+            g.setFont(fnt2);
+
+            button = new MouseOverUI(g,210,160,200,64, Game.gameState) {
+                @Override
+                public void onClick() {
+                    Game.gameState = lastGameState;
+                }
+            };
+            button.drawString("Back");
+
+            if(keepUIs.isEmpty()) {
+                TextOverBox textBox = new TextOverBox(g, 210, 350, 200, 64, Game.STATE.GETTING_CONNECT);
+
+
+                button = new TextOverButton(g, 210, 250, 200, 64, Game.STATE.GETTING_CONNECT, textBox) {
+                    @Override
+                    public void onClick() {
+                        Game.gameState = Game.STATE.JOINING;
+                        String address = getTextOverBox().getText();
+
+                        Client client = new Client(address, 2000);
+                        Thread thread = new Thread(client);
+
+                        thread.start();
+                        UniversalHandler.threads.add(thread);
+
+
+                    }
+                };
+
+                button.drawString("Join");
+
+
+                keepUIs.add(textBox);
+                keepUIs.add(button);
+            }
+        } else if (Game.gameState == Game.STATE.JOINING) {
+            MouseOverUI.mouseOverUIList = new ArrayList<>();
+
+            Font fnt = new Font("arial", Font.BOLD, 50);
+            Font fnt2 = new Font("arial", Font.BOLD, 30);
+
+            g.setFont(fnt);
+            g.setColor(Color.WHITE);
+
+            StringBuilder dotsThing = new StringBuilder();
+            ticked++;
+            if(ticked >= 100) {
+                ticked = 0;
+                dots++;
+            }
+
+            if(dots >= 4 || dots == 0) dots = 1;
+
+            for(int i = 0; i < dots;i++) dotsThing.append(".");
+
+            g.drawString("CONNECTING" +dotsThing, 160, 70);
 
         }
+
+        List<MouseOverUI> checkUis = new ArrayList<>(keepUIs);
+
+        for(MouseOverUI mouseOverUI : checkUis) {
+            if(mouseOverUI.getState() != Game.gameState){
+                keepUIs.remove(mouseOverUI);
+                continue;
+            }
+
+            mouseOverUI.render();
+        }
+
+        MouseOverUI.mouseOverUIList.addAll(checkUis);
     }
 
     public Menu(Game game,Handler handler,HUD hud) {
@@ -223,9 +328,9 @@ class Menu extends MouseAdapter {
 
     }
 
-    private void startGame() {
+    public void startGame() {
 
-        if(Game.gameState != Game.STATE.JOINING) {
+        if(Game.gameState != Game.STATE.IN_SERVER) {
             EntityPlayer player = new EntityPlayer(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.PLAYER, GameObject.entities);
             UniversalHandler.mainPlayer = player;
 
@@ -235,7 +340,7 @@ class Menu extends MouseAdapter {
 
             handler.clearObjects();
 
-        if(Game.gameState == Game.STATE.JOINING) {
+        if(Game.gameState == Game.STATE.IN_SERVER) {
             UniversalHandler.isServer = true;
         }
       //  handler.clearEnemies();
@@ -248,20 +353,30 @@ class Menu extends MouseAdapter {
         }
     }
 
+
+
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
 
         //System.out.println(GAME.gameState);
-        for(MouseOverUI mouseOverUI : mouseOverUIList) {
-            if(mouseOverUI.state == Game.gameState) {
-                boolean result = mouseOver(mx, my, mouseOverUI);
-
+        for(MouseOverUI ui : MouseOverUI.mouseOverUIList) {
+            if(ui.getState() == Game.gameState) {
+                boolean result = mouseOver(mx, my, ui);
                 if (result) {
-                    //System.out.println("Clicked ui element at state " + mouseOverUI.state + " " + mouseOverUI);
-                    mouseOverUI.onClick();
-                    System.out.println(Game.gameState + "\n");
+                    Game.STATE rememberState = Game.gameState;
+                    ui.onClick();
+
+
+
+                    if(Game.gameState != rememberState) lastGameState = rememberState;
+                    //System.out.println(Game.gameState + "\n");
                     return;
+                }else{
+                    if(ui instanceof TextOverBox) {
+                        TextOverBox textBox = (TextOverBox) ui;
+                        textBox.setSelected(false);
+                    }
                 }
             }
         }
@@ -309,71 +424,10 @@ class Menu extends MouseAdapter {
     }
 
     private boolean mouseOver(int mx, int my, MouseOverUI ui) {
-        return (mx > ui.x && mx < ui.x + ui.width) && (my > ui.y && my < ui.y + ui.height);
+        return (mx > ui.getX() && mx < ui.getX() + ui.getWidth()) && (my > ui.getY() && my < ui.getY() + ui.getHeight());
     }
 
-    private abstract class MouseOverUI {
-        private final int x;
-        private final int width;
-        private final int y;
-        private final int height;
-
-        private String string = "";
-        private int stringX,stringY;
-
-        private final Game.STATE state;
-
-        private final Graphics g;
-
-        public int getX() {
-            return x;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        MouseOverUI(Graphics g, int x, int y, int width, int height, Game.STATE state) {
-            this.x = x;
-            this.width = width;
-            this.y = y;
-            this.height = height;
-            this.state = state;
-            this.g = g;
-
-            g.drawRect(x, y, width, height);
-            mouseOverUIList.add(this);
-        }
-
-        void drawString(String string, int stringX, int stringY) {
-            g.drawString(string,stringX,stringY);
-            this.string = string;
-            this.stringX = stringX;
-            this.stringY = stringY;
-        }
-
-        void drawString(String string) {
-            g.drawString(string,x+60,y+40);
-            this.string = string;
-            this.stringX = x+60;
-            this.stringY = y+40;
-        }
-
-        abstract void onClick();
 
 
-        @Override
-        public String toString() {
 
-            return string + " " + stringX + " " + stringY + " box " + x + " " + y + " " + width + ":" + height;
-        }
-    }
 }

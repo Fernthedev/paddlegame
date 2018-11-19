@@ -11,6 +11,7 @@ import io.github.fernthedev.secondgame.main.netty.client.EventListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.net.ConnectException;
 import java.util.Random;
 
 import static io.github.fernthedev.secondgame.main.Game.HEIGHT;
@@ -28,12 +29,11 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     private final Client client;
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-
+    public void channelRegistered(ChannelHandlerContext ctx) {
+        Game.gameState = Game.STATE.IN_SERVER;
+        Game.getMenu().startGame();
         client.registered = true;
 
-        //ChannelFuture future = ctx.writeAndFlush(new ConnectedPacket(client.name));
-        System.out.println("Sent connect packet for request");
     }
 
     @Override
@@ -54,8 +54,17 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         resetGame();
     }
 
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+        if(cause.getCause() instanceof ConnectException) {
+            resetGame();
+        }else ctx.fireExceptionCaught(cause);
+
+        //ctx.fireExceptionCaught(cause);
+    }
+
     private void resetGame() {
-        if (Game.gameState.isMenu()) {
+        if (!Game.gameState.isMenu()) {
             Game.getHandler().clearObjects();
             Game.gameState = Game.STATE.MENU;
 

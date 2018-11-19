@@ -32,10 +32,6 @@ public class Server implements Runnable {
     }
 
 
-
-
-
-
     public static final Map<Channel,ClientPlayer> socketList = new HashMap<>();
 
     public static final Map<Channel,Server> channelServerHashMap = new HashMap<>();
@@ -67,6 +63,12 @@ public class Server implements Runnable {
     private GameMechanics gameManager;
 
     private ProcessingHandler processingHandler;
+
+    private Thread thread;
+
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
 
     public Server(int port) {
         this.port = port;
@@ -206,7 +208,7 @@ public class Server implements Runnable {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
             System.out.println("Now current thread.");
-            Thread.currentThread().join();
+            thread.join();
             System.out.println("Goodbye!");
             System.exit(0);
         } catch (InterruptedException e) {
@@ -215,6 +217,8 @@ public class Server implements Runnable {
 
 
     }
+
+
     public boolean isRunning() {
         return UniversalHandler.running;
       //  return running;

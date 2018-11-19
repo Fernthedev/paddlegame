@@ -47,7 +47,7 @@ public class EventListener {
 
             EntityPlayer player = new EntityPlayer(info.getKeepPlayer(), oldPlayer);
 
-            System.out.println("Updating old " + oldPlayer + " to new " + player + " from packet");
+        //    System.out.println("Updating old " + oldPlayer + " to new " + player + " from packet");
 
             ServerGameHandler.getEntityHandler().updatePlayerObject(clientPlayer,player);
 
