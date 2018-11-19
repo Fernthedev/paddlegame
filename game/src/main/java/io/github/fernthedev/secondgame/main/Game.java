@@ -277,6 +277,9 @@ public class Game extends Canvas implements Runnable {
     }
 
 
+    /**
+     * Shutdown game.
+     */
     public static void stopGame() {
         Random r = new Random();
         gameState = STATE.END;

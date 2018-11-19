@@ -81,20 +81,12 @@ public class Server implements Runnable {
         this.entityHandler = entityHandler;
     }
 
-
-    @Deprecated
-    public void startServer() {
-    }
-
+    /**
+     * Bind port
+     */
     private void bind() {
         try {
-
-           // while(port <= 0) {
-          ///      port = r.nextInt(2000);
-        //    }
-
             future = bootstrap.bind(port).sync();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -111,7 +103,9 @@ public class Server implements Runnable {
     }
 
 
-
+    /**
+     * Await connection
+     */
     private void connect() {
         while (UniversalHandler.running) {
             try {
@@ -122,48 +116,21 @@ public class Server implements Runnable {
                 future.channel().closeFuture().sync();
 
 
-                if(future.channel().isActive() && future.channel().isRegistered()) {
-                    channelServerHashMap.put(future.channel(),this);
+                if (future.channel().isActive() && future.channel().isRegistered()) {
+                    channelServerHashMap.put(future.channel(), this);
                 }
-
-                /*
-
-                future.addListener((ChannelFutureListener) channelFuture -> {
-                    if (channelFuture.isSuccess()) {
-                        channel = channelFuture.channel();
-
-
-                        System.out.println("Connected to channel " + future.channel());
-                        establishClient(future);
-
-                        channelFuture.channel().closeFuture().addListener((ChannelFutureListener) channelFuture1 -> {
-                            future.channel().closeFuture().sync();
-                            channel.closeFuture().sync();
-                        });
-
-                    }
-                });*/
-
-                //future.channel().closeFuture().sync();
-                //future.channel().closeFuture().sync();
-
-
-            /*if (!future.isSuccess()) {
-                System.out.println("Failed to bind port");
-            }*/
-
-                // if (future.channel().isRegistered()) {
-                //         System.out.println("Connected to channel " + future.channel().remoteAddress());
-                //    }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
 
         }
-
     }
 
+    /**
+     * Send packet to all connections.
+     * @param packet The packet to send
+     */
     public synchronized static void sendObjectToAllPlayers(Packet packet) {
         for(Channel channel : socketList.keySet()) {
           //  System.out.println(packet);
@@ -188,13 +155,15 @@ public class Server implements Runnable {
     }
 
 
-
+    /**
+     * Shut down the entire server
+     */
     synchronized void shutdownServer() {
         UniversalHandler.isServer = false;
         UniversalHandler.running = false;
         UniversalHandler.threads.remove(Thread.currentThread());
-        for (ServerThread thread : serverThreads) {
-            thread.close();
+        for (ServerThread serverThread : serverThreads) {
+            serverThread.close();
         }
 
         try {

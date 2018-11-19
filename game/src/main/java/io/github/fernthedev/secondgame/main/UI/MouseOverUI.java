@@ -6,6 +6,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mouse button
+ */
 public abstract class MouseOverUI {
 
     static List<MouseOverUI> mouseOverUIList = new ArrayList<>();
@@ -69,6 +72,10 @@ public abstract class MouseOverUI {
         this.drawString(string,x+60,y+40);
     }
 
+    /**
+     * Checks for a textbox that is selected
+     * @return A selected textbox, if none found return null
+     */
     public static TextOverBox isTextBoxSelected() {
         for(MouseOverUI ui : MouseOverUI.mouseOverUIList) {
             if(ui instanceof TextOverBox) {

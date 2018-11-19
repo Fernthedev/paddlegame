@@ -40,6 +40,10 @@ public class ServerThread implements Runnable {
 
     }
 
+    /**
+     * Send packet
+     * @param packet The packet to send
+     */
     private synchronized void sendObject(Object packet) {
         if (packet instanceof Packet) {
             if (isConnected) {
@@ -55,6 +59,9 @@ public class ServerThread implements Runnable {
     }
 
 
+    /**
+     * Close connection
+     */
     synchronized void close() {
         try {
             System.out.println("Closing connection at for player " + clientPlayer);

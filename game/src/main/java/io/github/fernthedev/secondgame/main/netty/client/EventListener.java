@@ -32,14 +32,18 @@ public class EventListener {
     EventListener() {
     }
 
+    /**
+     * Packet handler
+     * @param p Received packet
+     */
     public void recieved(Object p) {
-        if(p instanceof PingPacket) {
+        if (p instanceof PingPacket) {
             //System.out.println("Ponged!");
             PingPacket packet = (PingPacket) p;
 
-            long time = (System.nanoTime() - packet.getTime() ) / 1000000;
+            long time = (System.nanoTime() - packet.getTime()) / 1000000;
 
-            System.out.println("Ping: " + TimeUnit.MILLISECONDS.convert(time,TimeUnit.NANOSECONDS) + " ms");
+            System.out.println("Ping: " + TimeUnit.MILLISECONDS.convert(time, TimeUnit.NANOSECONDS) + " ms");
             Client.getClientThread().sendObject(new PongPacket());
         } else if (p instanceof SendGameObject) {
             SendGameObject gameObject = (SendGameObject) p;
@@ -52,10 +56,10 @@ public class EventListener {
 
             UniversalHandler.mainPlayer = new EntityPlayer(playerPacket.getUniversalPlayer());
 
-            UniversalHandler.getThingHandler().updatePlayerObject(null,UniversalHandler.mainPlayer);
+            UniversalHandler.getThingHandler().updatePlayerObject(null, UniversalHandler.mainPlayer);
 
-           // GAME.getHandler().removeObject(GAME.mainPlayer);
-          //  GAME.mainPlayer = new UniversalPlayer(playerPacket.getKeepPlayer(),GAME.getHandler(),GAME.getHud(),playerPacket.getKeepPlayer().getColor());
+            // GAME.getHandler().removeObject(GAME.mainPlayer);
+            //  GAME.mainPlayer = new UniversalPlayer(playerPacket.getKeepPlayer(),GAME.getHandler(),GAME.getHud(),playerPacket.getKeepPlayer().getColor());
 
         } else if (p instanceof SendPlayerInfoPacket) {
             SendPlayerInfoPacket info = (SendPlayerInfoPacket) p;
@@ -63,10 +67,10 @@ public class EventListener {
 
 
             Game.getHandler().setPlayerInfo(universalPlayer);
-            if(info.getPlayerObject().getObjectID() == UniversalHandler.mainPlayer.getObjectID()) {
+            if (info.getPlayerObject().getObjectID() == UniversalHandler.mainPlayer.getObjectID()) {
                 UniversalHandler.mainPlayer.setHealth(info.getPlayerObject().getHealth());
             }
-        }else if (p instanceof SetCoin) {
+        } else if (p instanceof SetCoin) {
 
             System.out.println("Coin one up");
 
@@ -80,7 +84,8 @@ public class EventListener {
 
             EntityPlayer universalPlayer;
 
-            Type listType = new TypeToken<ArrayList<GsonObject>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<GsonObject>>() {
+            }.getType();
 
             List<GsonObject> gameObjects = UniversalHandler.gson.fromJson(list.getObjectList(), listType);
 
@@ -93,44 +98,35 @@ public class EventListener {
 
             universalPlayer = list.getMainPlayer();
 
-            for(GsonObject gameObject : gameObjects) {
+            for (GsonObject gameObject : gameObjects) {
                 GameObject checkedObject = ClientObject.getObjectType(gameObject);
 
                 objectsAsInstanceFromPacket.add(checkedObject);
             }
 
 
+            List<GameObject> currentGameObjects = new ArrayList<>(UniversalHandler.getThingHandler().getGameObjects());
+            for (GameObject gameObject : currentGameObjects) {
+                if (gameObject instanceof Trail) {
+                    newObjects.add(gameObject);
+                }
+            }
 
+            finalGameObjects = new ArrayList<>(objectsAsInstanceFromPacket);
 
-           List<GameObject> currentGameObjects = new ArrayList<>(UniversalHandler.getThingHandler().getGameObjects());
-           for(GameObject gameObject : currentGameObjects) {
-               if(gameObject instanceof Trail) {
-                   newObjects.add(gameObject);
-               }
-           }
+            finalGameObjects.addAll(newObjects);
 
-           finalGameObjects = new ArrayList<>(objectsAsInstanceFromPacket);
-
-           finalGameObjects.addAll(newObjects);
-
-
-
-
-
-
-
-
-                System.out.println("Updating player bc server asked us to " + universalPlayer);
-                UniversalHandler.getThingHandler().updatePlayerObject(null,universalPlayer);
-                UniversalHandler.mainPlayer = universalPlayer;
+            System.out.println("Updating player bc server asked us to " + universalPlayer);
+            UniversalHandler.getThingHandler().updatePlayerObject(null, universalPlayer);
+            UniversalHandler.mainPlayer = universalPlayer;
 
             UniversalHandler.getThingHandler().setGameObjects(finalGameObjects);
         } else if (p instanceof GetToSendInfo) {
             GetToSendInfo info = (GetToSendInfo) p;
 
-            EntityPlayer player = new EntityPlayer(info.getKeepPlayer(),info.getNewPlayer());
+            EntityPlayer player = new EntityPlayer(info.getKeepPlayer(), info.getNewPlayer());
 
-            UniversalHandler.getThingHandler().updatePlayerObject(null,player);
+            UniversalHandler.getThingHandler().updatePlayerObject(null, player);
             UniversalHandler.mainPlayer = player;
 
             Game.sendPacket(new SendPlayerInfoPacket(new EntityPlayer(UniversalHandler.mainPlayer)));

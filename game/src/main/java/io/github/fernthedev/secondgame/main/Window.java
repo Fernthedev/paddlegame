@@ -6,6 +6,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
+/**
+ * Creates window for game.
+ */
 class Window extends Canvas {
 
     private Game game;

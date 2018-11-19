@@ -16,10 +16,20 @@ public class UniversalHandler {
 
     public static int tickWait = 15;
 
+    /**
+     * Used for running threads.
+     */
     public static boolean running = false;
 
+    /**
+     * Toggled if is running server or not
+     * If run by server, always true
+     */
     public static boolean isServer = false;
 
+    /**
+     * This is the mainplayer for the game
+     */
     public static EntityPlayer mainPlayer = null;
 
     public static Gson gson = new Gson();
@@ -30,6 +40,10 @@ public class UniversalHandler {
         return instance == null ? instance = new UniversalHandler() : instance;
     }
 
+    /**
+     * Manages methods aimed for use in game and server differently.
+     * @param manager The manager that is extended
+     */
     public static void setup(GameManager manager) {
         gameManager = manager;
     }
@@ -54,15 +68,6 @@ public class UniversalHandler {
      * @param max The Max Value
      * @return Returns the max or min if either var is greater than either, if not returns var
      */
-
-    /**
-     * CREATING A BOX/LIMIT FOR A VARIABLE
-     * @param var Variable being affected
-     * @param min The minimum value
-     * @param max The Max Value
-     * @return Returns the max or min if either var is greater than either, if not returns var
-     */
-
     public static float clamp(float var, float min, float max) {
         if(var >= max) {
           //  System.out.println(max + " is max");

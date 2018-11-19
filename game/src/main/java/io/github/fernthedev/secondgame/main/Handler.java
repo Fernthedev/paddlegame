@@ -22,6 +22,9 @@ public class Handler {
     private final HUD hud;
 
 
+    /**
+     * Tick accordingly for server usage
+     */
     public void serverTick() {
         UniversalHandler.getThingHandler().tick();
 
@@ -32,6 +35,10 @@ public class Handler {
         }
     }
 
+    /**
+     * Render entities
+     * @param g Rendering graphic
+     */
     public void render(Graphics g) {
 
         List<GameObject> gameObjects = new ArrayList<>(UniversalHandler.getThingHandler().getGameObjects());
@@ -49,26 +56,21 @@ public class Handler {
             }
         }
 
-       // System.out.println(gameObjects);
 
     }
 
+    @Deprecated
     public void addObject(GameObject object) {
-        //System.out.println(UniversalHandler.getThingHandler());
-
-
-
         UniversalHandler.getThingHandler().addEntityObject(object);
     }
 
+    @Deprecated
     public void removeObject(GameObject object) {
         UniversalHandler.getThingHandler().removeEntityObject(object);
     }
 
 
     public void clearObjects() {
-        // List<GameObject> gameObjects = new ArrayList<>(ClientEntityHandler.gameObjects);
-
         System.out.println("Clearing ");
 
 
@@ -84,7 +86,6 @@ public class Handler {
         if(player != null) {
             UniversalHandler.getThingHandler().updatePlayerObject(null,player);
         }
-       // addObject(player);
     }
 
     public Handler(HUD hud) {

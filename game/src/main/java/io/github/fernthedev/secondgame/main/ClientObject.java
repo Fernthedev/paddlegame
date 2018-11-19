@@ -6,7 +6,7 @@ import com.github.fernthedev.universal.entity.*;
 
 
 import java.awt.*;
-
+@Deprecated
 public class ClientObject extends GameObject {
         public ClientObject(float x, float y, ID id, int objectID) {
             super(x, y, id,objectID);

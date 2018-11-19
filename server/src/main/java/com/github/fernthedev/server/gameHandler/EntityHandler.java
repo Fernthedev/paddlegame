@@ -14,6 +14,9 @@ import io.netty.channel.Channel;
 
 import java.util.*;
 
+/**
+ * Handles entities server side.
+ */
 public class EntityHandler extends ThingHandler implements Runnable {
 
     public Map<Integer, GameObject> getGameObjectMap() {
@@ -244,10 +247,10 @@ public class EntityHandler extends ThingHandler implements Runnable {
 
 
 
-    public synchronized List<GameObject> noTraiLlist(List<GameObject> oldgameObjects) {
+    public synchronized List<GameObject> noTraiLlist(List<GameObject> gameObjects1) {
         List<GameObject> noTrail = new ArrayList<>();
 
-        List<GameObject> gameObjects = new ArrayList<>(oldgameObjects);
+        List<GameObject> gameObjects = new ArrayList<>(gameObjects1);
 
         for (Iterator<GameObject> iterator = gameObjects.iterator(); iterator.hasNext(); ) {
             GameObject tempObject = iterator.next();

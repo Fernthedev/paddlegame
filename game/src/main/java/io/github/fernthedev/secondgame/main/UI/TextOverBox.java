@@ -4,6 +4,9 @@ import io.github.fernthedev.secondgame.main.Game;
 
 import java.awt.*;
 
+/**
+ * A text box
+ */
 public class TextOverBox extends MouseOverUI {
 
     private String text = "";
@@ -13,16 +16,29 @@ public class TextOverBox extends MouseOverUI {
         super(g, x, y, width, height, state);
     }
 
+    /**
+     * Returns if it is selected
+     * @return if selected
+     */
     public boolean isSelected() {
         if(Game.gameState != state) return false;
 
         return selected;
     }
 
+
+    /**
+     * If selected or not
+     * @param selected The boolean
+     */
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
+
+    /**
+     * Draw input text
+     */
     void drawString() {
         if(text == null) text = "";
 
@@ -31,22 +47,35 @@ public class TextOverBox extends MouseOverUI {
 
     }
 
+    /**
+     * Render method
+     */
     public void render() {
         super.render();
-       // System.out.println("Rendering box " + text + " " + selected);
 
         drawString();
     }
 
+    /**
+     * On click
+     */
     @Override
     public void onClick() {
         selected = true;
     }
 
+    /**
+     * Get input text
+     * @return input text
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Set input text
+     * @param text Text
+     */
     public void setText(String text) {
         this.text = text;
     }

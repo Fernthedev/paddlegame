@@ -3,22 +3,35 @@ package io.github.fernthedev.secondgame.main.UI;
 import io.github.fernthedev.secondgame.main.Game;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * A button that is accessing inputs from text boxes assigned to it
+ */
 public abstract class TextOverButton extends MouseOverUI {
-    private TextOverBox textOverBox;
+    private List<TextOverBox> textOverBox;
 
-    public TextOverBox getTextOverBox() {
+    /**
+     * Get text boxes assigned
+     * @return All text boxes assigned
+     */
+    public List<TextOverBox> getTextOverBoxes() {
         return textOverBox;
     }
 
-    TextOverButton(Graphics g, int x, int y, int width, int height, Game.STATE state, TextOverBox textOverBox) {
-        super(g, x, y, width, height, state);
-        this.textOverBox = textOverBox;
+    /**
+     * If is only one text box
+     * @return The first textbox in the list
+     */
+    public TextOverBox getTextOverBox() {
+        return textOverBox.get(0);
     }
 
-    @Override
-    public void onClick() {
-       System.out.println(textOverBox.getText());
+    TextOverButton(Graphics g, int x, int y, int width, int height, Game.STATE state, TextOverBox... textOverBox) {
+        super(g, x, y, width, height, state);
+        this.textOverBox = new ArrayList<>(Arrays.asList(textOverBox));
     }
 
 }

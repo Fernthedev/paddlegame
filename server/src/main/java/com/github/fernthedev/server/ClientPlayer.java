@@ -35,9 +35,9 @@ public class ClientPlayer {
 
     private EntityPlayer playerObject;
 
-    public Channel channel = null;
+    public Channel channel;
 
-    public void setThread(Thread thread,ServerThread serverThread) {
+    public void setThread(Thread thread, ServerThread serverThread) {
         this.thread = thread;
         this.serverThread = serverThread;
     }
@@ -52,28 +52,30 @@ public class ClientPlayer {
         connected = true;
     }
 
-    protected ClientPlayer() {}
-
-        void setLastPacket(Object packet) {
-
-        }
-
+    /**
+     * Send packet
+     *
+     * @param packet The packet to send
+     */
     public synchronized void sendObject(Object packet) {
         if (packet instanceof Packet && channel != null) {
             //System.out.println("Sending packet");
             channel.writeAndFlush(packet);
 
-            if(packet instanceof GameOverPacket) close();
+            if (packet instanceof GameOverPacket) close();
             // out.flush();
            /* if(!(packet instanceof PingPacket)) {
                 System.out.println("Sent " + packet);
             }*/
 
-        }else {
+        } else {
             System.out.println("not packet");
         }
     }
 
+    /**
+     * Close client connection
+     */
     public synchronized void close() {
         try {
             isClosing = true;
@@ -81,7 +83,7 @@ public class ClientPlayer {
             System.out.println("Closing player " + this.toString());
             //DISCONNECT FROM SERVER
             //RemovePlayerPacket packet = new RemovePlayerPacket();
-            if(channel != null) {
+            if (channel != null) {
                 if (channel.isOpen()) {
                     channel.closeFuture();
 
@@ -93,7 +95,6 @@ public class ClientPlayer {
                 }
             }
             //if(!scanner.nextLine().equals(""))
-
 
 
             connected = false;
@@ -110,46 +111,57 @@ public class ClientPlayer {
     }
 
 
-
     public synchronized void setPlayerObject(EntityPlayer playerObject) {
         this.playerObject = playerObject;
     }
 
     @Override
     public String toString() {
-
         return "[ClientPlayer] IP: " + getAdress() + " name " + playerObject;
     }
 
 
-
-        String getAdress() {
-        if(channel == null || channel.remoteAddress() == null) {
+    /**
+     * Get client ip
+     * @return The IP, return's "unknown" if no channel is associated
+     */
+    String getAdress() {
+        if (channel == null || channel.remoteAddress() == null) {
             return "unknown";
         }
 
-            return channel.remoteAddress().toString();
+        return channel.remoteAddress().toString();
+    }
+
+    /**
+     * Get client object from id
+     *
+     * @param id The Object ID
+     * @return The clientplayer associated with the object id. May return null if not found
+     */
+    public static ClientPlayer getPlayerFromObject(int id) {
+        List<ClientPlayer> clientPlayers = new ArrayList<>(Server.socketList.values());
+
+        for (ClientPlayer clientPlayer : clientPlayers) {
+            if (clientPlayer.playerObject.objectID == id) return clientPlayer;
         }
 
-        public static ClientPlayer getPlayerFromObject(int id) {
-        ClientPlayer clientPlayerReturn = null;
-            List<ClientPlayer> clientPlayers = new ArrayList<>(Server.socketList.values());
+        return null;
+    }
 
-            for(ClientPlayer clientPlayer : clientPlayers) {
-                if(clientPlayer.playerObject.objectID == id) return clientPlayer;
-            }
+    /**
+     * Get client from object
+     * @param universalPlayer The object associated with the client
+     * @return The client associated with the object. May return null if not found
+     */
+    public static ClientPlayer getPlayerFromObject(EntityPlayer universalPlayer) {
+        List<ClientPlayer> clientPlayers = new ArrayList<>(Server.socketList.values());
 
-            return null;
+        for (ClientPlayer clientPlayer : clientPlayers) {
+            if (clientPlayer.playerObject == universalPlayer) return clientPlayer;
         }
-
-        public static ClientPlayer getPlayerFromObject(EntityPlayer universalPlayer) {
-            List<ClientPlayer> clientPlayers = new ArrayList<>(Server.socketList.values());
-
-            for(ClientPlayer clientPlayer : clientPlayers) {
-                if(clientPlayer.playerObject == universalPlayer) return clientPlayer;
-            }
-            return null;
-        }
+        return null;
+    }
 
 
 }

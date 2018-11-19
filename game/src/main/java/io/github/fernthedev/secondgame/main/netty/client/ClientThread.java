@@ -87,38 +87,8 @@ public class ClientThread implements Runnable {
 
             Game.getHandler().clearObjects();
 
-            // System.out.println("Making new thread");
-
-
-            //socket.getOutputStream().flush();
-
-
-            //BufferedReader bis = new BufferedReader(new InputStreamReader(in));
             connected = true;
 
-
-           /* if (!Client.currentThread.isAlive()) {
-                UniversalHandler.running = true;
-                Client.currentThread.start();
-                System.out.println("This thread started");
-            }*/
-
-            //setReadListener();
-
-            /*
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                if (channel.isActive() && player != null) {
-                    //sendObject(new RemovePlayerPacket(player));
-                    disconnect();
-                }
-                for (Thread thread : Thread.getAllStackTraces().keySet()) {
-                    try {
-                        thread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }));*/
 
         }
     }
@@ -129,12 +99,6 @@ public class ClientThread implements Runnable {
         if (packet instanceof Packet) {
             if (channel.isActive()) {
                 channel.writeAndFlush(packet);
-
-
-                // System.out.println("Sent");
-              /*  if(!(packet instanceof PongPacket)) {
-                    System.out.println("Sent an gameObjects which is " + packet);
-                }*/
             } else{
                 disconnect();
             }

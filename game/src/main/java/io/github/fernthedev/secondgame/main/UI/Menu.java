@@ -324,28 +324,28 @@ public class Menu extends MouseAdapter {
         this.handler = handler;
     }
 
+    @Deprecated
     public void tick() {
 
     }
 
+    /**
+     * Start the game accordingly
+     */
     public void startGame() {
-
-        if(Game.gameState != Game.STATE.IN_SERVER) {
+        if (Game.gameState != Game.STATE.IN_SERVER) {
             EntityPlayer player = new EntityPlayer(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.PLAYER, GameObject.entities);
             UniversalHandler.mainPlayer = player;
 
             handler.addObject(player);
         }
+        handler.clearObjects();
 
-
-            handler.clearObjects();
-
-        if(Game.gameState == Game.STATE.IN_SERVER) {
+        if (Game.gameState == Game.STATE.IN_SERVER) {
             UniversalHandler.isServer = true;
         }
-      //  handler.clearEnemies();
 
-        if(Game.gameState == Game.STATE.GAME) {
+        if (Game.gameState == Game.STATE.GAME) {
             UniversalHandler.setup(Game.clientManager);
             UniversalHandler.isServer = false;
             handler.addObject(new Ball(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BALL, GameObject.entities));
@@ -354,7 +354,10 @@ public class Menu extends MouseAdapter {
     }
 
 
-
+    /**
+     * Mouse event
+     * @param e Event variable
+     */
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
@@ -380,37 +383,6 @@ public class Menu extends MouseAdapter {
                 }
             }
         }
-
-/*
-            if (GAME.gameState == GAME.STATE.MENU) {
-                //PLAY BUTTON
-                if (mouseOver(mx, my, 210, 150, 200, 64)) {
-
-                }
-                //QUIT
-                if (mouseOver(mx, my, 210, 350, 200, 64)) {
-
-                }
-                //HELP
-                if (mouseOver(mx, my, 210, 250, 200, 64)) {
-
-                }
-            }
-
-
-            //BACK FOR HELP
-            if (GAME.gameState == GAME.STATE.HELP) {
-                if (mouseOver(mx, my, 210, 350, 200, 64)) {
-
-                }
-            }*/
-
-            //BACK FOR END
-           /* if (GAME.gameState == GAME.STATE.END) {
-                if (mouseOver(mx, my, 210, 350, 200, 64)) {
-
-                }
-            }*/
     }
 
 

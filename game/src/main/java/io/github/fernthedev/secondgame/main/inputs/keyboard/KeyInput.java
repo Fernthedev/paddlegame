@@ -35,13 +35,8 @@ public class KeyInput extends KeyAdapter {
         keyDown[1] = false;
         keyDown[2] = false;
         keyDown[3] = false;
-        /*GLFW.glfwInit();
-        GLFW.glfwPollEvents();
-
-        if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
-            System.out.println("connected controller " + glfwGetJoystickName(GLFW_JOYSTICK_1));
-        }*/
     }
+
 
     public void checkKeyBox(KeyEvent e) {
         if(e == null) return;
@@ -201,4 +196,6 @@ public class KeyInput extends KeyAdapter {
             System.out.println("Updated player " + UniversalHandler.mainPlayer + " and sent packet");
         }
     }
+
+
 }

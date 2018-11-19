@@ -15,7 +15,6 @@ public class JoystickHandler {
     private JInputJoystick joystick1;
 
 
-
     int oldHorizontal = 0,oldVertical = 0;
 
     public static boolean[] getConnectedController() {
@@ -25,6 +24,7 @@ public class JoystickHandler {
     private static boolean connectedController[] = new boolean[4];
 
     public JoystickHandler(Game game) {
+        this.game = game;
         /* Create an event object for the underlying plugin to populate */
         Event event = new Event();
 
@@ -97,7 +97,6 @@ public class JoystickHandler {
 
         }
 
-
         if (joystick1 != null && joystick1.getController() != null) {
             joystick1.pollController();
 
@@ -128,100 +127,98 @@ public class JoystickHandler {
                 }
 // gamepad type controller
                 else {
-                    boolean toUpdate = false;
                     // Right controller joystick
                     xValuePercentageRightJoystick = joystick1.getXRotationPercentage();
                     yValuePercentageRightJoystick = joystick1.getYRotationPercentage();
+                }
+
+                boolean toUpdate = false;
+
+                int horizontal = 0;
+                int vertical = 0;
 
 
-
-                    int horizontal = 0;
-                    int vertical = 0;
-
-
-                    if (!(xValuePercentageLeftJoystick >= 40 && xValuePercentageLeftJoystick <= 60)) {
-
-
-
-                        // If Z Axis exists.
-                        if (joystick1.componentExists(Component.Identifier.Axis.Z)) {
-                            int zAxisValuePercentage = joystick1.getZAxisPercentage();
-                        }
-
-
-                        if (xValuePercentageLeftJoystick >= 50 && xValuePercentageLeftJoystick <= 100) {
-                            System.out.println(1 + " assuming right");
-                            horizontal = 5;
-
-
-                            if(oldHorizontal != horizontal) {
-                                System.out.println("Updating 5 horizontal");
-                                oldHorizontal = horizontal;
-                                toUpdate = true;
-                            }
-                        }
-
-                        if (xValuePercentageLeftJoystick <= 50) {
-                            System.out.println(2 + " assuming left");
-                            horizontal = (-5);
-
-                            if(oldHorizontal != horizontal) {
-                                System.out.println("Updating -5 horizontal");
-                                oldHorizontal = horizontal;
-                                toUpdate = true;
-                            }
-                        }
+                if (!(xValuePercentageLeftJoystick >= 40 && xValuePercentageLeftJoystick <= 60)) {
+                    // If Z Axis exists.
+                    if (joystick1.componentExists(Component.Identifier.Axis.Z)) {
+                        int zAxisValuePercentage = joystick1.getZAxisPercentage();
                     }
 
-                    if (!(yValuePercentageLeftJoystick >= 40 && yValuePercentageLeftJoystick <= 60)) {
 
-                        if (yValuePercentageLeftJoystick >= 50 && yValuePercentageLeftJoystick <= 100) {
-                            System.out.println(3 + " assuming down " + yValuePercentageLeftJoystick);
-                            vertical = 5;
+                    if (xValuePercentageLeftJoystick >= 50 && xValuePercentageLeftJoystick <= 100) {
+                        System.out.println(1 + " assuming right");
+                        horizontal = 5;
 
-                            if(oldVertical != vertical) {
-                                System.out.println("Updating 5 vertical");
-                                oldVertical = vertical;
-                                toUpdate = true;
-                            }
-                        }
-                        if (yValuePercentageLeftJoystick <= 50) {
-                            //System.out.println(4 + " assuming up" + yValuePercentageLeftJoystick);
 
-                             vertical = -5;
-
-                            if(oldVertical != vertical) {
-                                System.out.println("Updating -5 vertical");
-                                oldVertical = vertical;
-                                toUpdate = true;
-                            }
-                        }
-                    }
-
-                    if(yValuePercentageLeftJoystick >= 40 && yValuePercentageLeftJoystick <= 60) {
-                        if(oldVertical != vertical) {
-                            oldHorizontal = horizontal;
-                            toUpdate = true;
-                        }
-                    }
-
-                    if(xValuePercentageLeftJoystick >= 40 && xValuePercentageLeftJoystick <= 60) {
                         if(oldHorizontal != horizontal) {
+                            System.out.println("Updating 5 horizontal");
                             oldHorizontal = horizontal;
                             toUpdate = true;
                         }
                     }
 
-                    if(Game.gameState == Game.STATE.GAME || Game.gameState == Game.STATE.IN_SERVER || Game.gameState == Game.STATE.HOSTING) {
+                    if (xValuePercentageLeftJoystick <= 50) {
+                        System.out.println(2 + " assuming left");
+                        horizontal = (-5);
 
-
-
-                        if(toUpdate) {
-                            updatePlayer(vertical,horizontal);
-                            update();
+                        if(oldHorizontal != horizontal) {
+                            System.out.println("Updating -5 horizontal");
+                            oldHorizontal = horizontal;
+                            toUpdate = true;
                         }
                     }
                 }
+
+                if (!(yValuePercentageLeftJoystick >= 40 && yValuePercentageLeftJoystick <= 60)) {
+
+                    if (yValuePercentageLeftJoystick >= 50 && yValuePercentageLeftJoystick <= 100) {
+                        System.out.println(3 + " assuming down " + yValuePercentageLeftJoystick);
+                        vertical = 5;
+
+                        if(oldVertical != vertical) {
+                            System.out.println("Updating 5 vertical");
+                            oldVertical = vertical;
+                            toUpdate = true;
+                        }
+                    }
+                    if (yValuePercentageLeftJoystick <= 50) {
+                        //System.out.println(4 + " assuming up" + yValuePercentageLeftJoystick);
+
+                        vertical = -5;
+
+                        if(oldVertical != vertical) {
+                            System.out.println("Updating -5 vertical");
+                            oldVertical = vertical;
+                            toUpdate = true;
+                        }
+                    }
+                }
+
+                if(yValuePercentageLeftJoystick >= 40 && yValuePercentageLeftJoystick <= 60) {
+                    if(oldVertical != vertical) {
+                        oldHorizontal = horizontal;
+                        toUpdate = true;
+                    }
+                }
+
+                if(xValuePercentageLeftJoystick >= 40 && xValuePercentageLeftJoystick <= 60) {
+                    if(oldHorizontal != horizontal) {
+                        oldHorizontal = horizontal;
+                        toUpdate = true;
+                    }
+                }
+
+                if(Game.gameState == Game.STATE.GAME || Game.gameState == Game.STATE.IN_SERVER || Game.gameState == Game.STATE.HOSTING) {
+
+
+
+                    if(toUpdate) {
+                        updatePlayer(vertical,horizontal);
+                        update();
+                    }
+                }
+
+
             }else{
                 InputHandler.inputType = InputType.KEYBOARD;
             }

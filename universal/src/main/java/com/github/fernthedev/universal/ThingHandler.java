@@ -56,6 +56,10 @@ public class ThingHandler {
         }
     }
 
+    /**
+     * Adds an entity to the list appropiately
+     * @param gameObject The entity
+     */
     public void addEntityObject(GameObject gameObject) {
 
         if(gameObject == null) throw new NullPointerException("Added a null pointer");
@@ -82,6 +86,10 @@ public class ThingHandler {
     }
 
 
+    /**
+     * Remove an entity from list
+     * @param gameObject The entity
+     */
     public void removeEntityObject(GameObject gameObject) {
         if(gameObject == null) throw new NullPointerException();
 
@@ -97,6 +105,9 @@ public class ThingHandler {
     }
 
 
+    /**
+     * The tick method, do not call
+     */
     public void tick() {
         List<GameObject> objects = new ArrayList<>(UniversalHandler.getThingHandler().getGameObjects());
 
@@ -109,7 +120,11 @@ public class ThingHandler {
             }
     }
 
-    public void collisionCheck(EntityPlayer universalPlayer) {
+    /**
+     * The physics method, do not call
+     * @param universalPlayer Player to check
+     */
+    private void collisionCheck(EntityPlayer universalPlayer) {
         List<GameObject> gameObjects = new ArrayList<>(UniversalHandler.getThingHandler().getGameObjects());
         for (GameObject tempObject : gameObjects) {
             if (tempObject.getId() == ID.BALL && universalPlayer.getBounds().intersects(tempObject.getBounds())) {
@@ -120,10 +135,15 @@ public class ThingHandler {
         }
     }
 
-    public synchronized List<GameObject> noTraiLlist(List<GameObject> oldgameObjects) {
+    /**
+     * The list of entities without trail objects
+     * @param gameObjects1 The list of objects you want to check
+     * @return The list of objects without trail
+     */
+    public synchronized List<GameObject> noTraiLlist(List<GameObject> gameObjects1) {
         List<GameObject> noTrail = new ArrayList<>();
 
-        List<GameObject> gameObjects = new ArrayList<>(oldgameObjects);
+        List<GameObject> gameObjects = new ArrayList<>(gameObjects1);
 
         for (Iterator<GameObject> iterator = gameObjects.iterator(); iterator.hasNext(); ) {
             GameObject tempObject = iterator.next();
@@ -133,6 +153,10 @@ public class ThingHandler {
         return noTrail;
     }
 
+    /**
+     * The list of entities without trail objects
+     * @return The list of objects without trail
+     */
     public synchronized List<GameObject> noTraiLlist() {
         List<GameObject> noTrail = new ArrayList<>();
 

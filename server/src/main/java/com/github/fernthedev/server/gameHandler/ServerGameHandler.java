@@ -3,6 +3,9 @@ package com.github.fernthedev.server.gameHandler;
 import com.github.fernthedev.server.Server;
 import com.github.fernthedev.universal.UniversalHandler;
 
+/**
+ * Handles the game physics and entity handling.
+ */
 public class ServerGameHandler implements Runnable {
 
     private final Server server;
