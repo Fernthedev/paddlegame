@@ -142,7 +142,6 @@ public class Server implements Runnable {
                // if (clientPlayer.channel.isActive()) {
                     clientPlayer.sendObject(packet);
             //    }
-                clientPlayer.setLastPacket(packet);
             } else {
                 System.out.println("not packet");
                 try {
