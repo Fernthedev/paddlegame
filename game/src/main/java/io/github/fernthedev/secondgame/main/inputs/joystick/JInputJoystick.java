@@ -401,9 +401,8 @@ public class JInputJoystick {
     public int getZAxisPercentage()
     {
         float zAxisValue = this.getZAxisValue();
-        int zAxisValuePercentage = (int)((2 - (1 - zAxisValue)) * 100) / 2;
 
-        return zAxisValuePercentage;
+        return (int)((2 - (1 - zAxisValue)) * 100) / 2;
     }
 
 
