@@ -48,7 +48,7 @@ public class EventListener {
         } else if (p instanceof SendGameObject) {
             SendGameObject gameObject = (SendGameObject) p;
 
-            Game.getHandler().addObject(gameObject.getGameObject());
+            UniversalHandler.getThingHandler().addEntityObject(gameObject.getGameObject());
         } else if (p instanceof SetCurrentPlayer) {
             SetCurrentPlayer playerPacket = (SetCurrentPlayer) p;
 
@@ -57,10 +57,6 @@ public class EventListener {
             UniversalHandler.mainPlayer = new EntityPlayer(playerPacket.getUniversalPlayer());
 
             UniversalHandler.getThingHandler().updatePlayerObject(null, UniversalHandler.mainPlayer);
-
-            // GAME.getHandler().removeObject(GAME.mainPlayer);
-            //  GAME.mainPlayer = new UniversalPlayer(playerPacket.getKeepPlayer(),GAME.getHandler(),GAME.getHud(),playerPacket.getKeepPlayer().getColor());
-
         } else if (p instanceof SendPlayerInfoPacket) {
             SendPlayerInfoPacket info = (SendPlayerInfoPacket) p;
             EntityPlayer universalPlayer = info.getPlayerObject();
@@ -142,7 +138,7 @@ public class EventListener {
             int amount = r.nextInt(15);
             if (amount < 10) amount = 10;
             for (int i = 0; i < amount; i++) {
-                Game.getHandler().addObject(new MenuParticle(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
+                UniversalHandler.getThingHandler().addEntityObject(new MenuParticle(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
             }
 
             Client.getClientThread().disconnect();

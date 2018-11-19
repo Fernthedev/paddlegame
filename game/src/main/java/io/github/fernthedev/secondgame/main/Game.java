@@ -128,12 +128,12 @@ public class Game extends Canvas implements Runnable {
 
         spawnner = new Spawn(handler, hud);
         if (gameState == STATE.GAME) {
-            handler.addObject(new Ball(r.nextInt(WIDTH - 50),r.nextInt(HEIGHT - 50),ID.BALL, GameObject.entities));
+            UniversalHandler.getThingHandler().addEntityObject(new Ball(r.nextInt(WIDTH - 50),r.nextInt(HEIGHT - 50),ID.BALL, GameObject.entities));
         }else {
             int amount = r.nextInt(15);
             if (amount < 10) amount = 10;
             for (int i = 0; i < amount; i++) {
-                handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
+                UniversalHandler.getThingHandler().addEntityObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
             }
         }
 
@@ -267,7 +267,7 @@ public class Game extends Canvas implements Runnable {
 
                 }
             } else if (gameState == STATE.MENU || gameState == STATE.END || gameState == STATE.HELP || gameState == STATE.MULTIPLAYER || gameState == STATE.GETTING_CONNECT) {
-                menu.tick();
+               // menu.tick();
                 UniversalHandler.getThingHandler().tick();
                 testJoyStick.tick();
             }
@@ -286,7 +286,7 @@ public class Game extends Canvas implements Runnable {
         int amount = r.nextInt(15);
         if (amount < 10) amount = 10;
         for (int i = 0; i < amount; i++) {
-            handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
+            UniversalHandler.getThingHandler().addEntityObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MENU_PARTICLE, GameObject.entities));
         }
     }
 

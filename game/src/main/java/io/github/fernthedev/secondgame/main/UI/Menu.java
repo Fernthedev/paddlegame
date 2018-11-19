@@ -333,13 +333,14 @@ public class Menu extends MouseAdapter {
      * Start the game accordingly
      */
     public void startGame() {
+        handler.clearObjects();
         if (Game.gameState != Game.STATE.IN_SERVER) {
             EntityPlayer player = new EntityPlayer(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.PLAYER, GameObject.entities);
             UniversalHandler.mainPlayer = player;
 
-            handler.addObject(player);
+            UniversalHandler.getThingHandler().addEntityObject(player);
         }
-        handler.clearObjects();
+
 
         if (Game.gameState == Game.STATE.IN_SERVER) {
             UniversalHandler.isServer = true;
@@ -348,8 +349,7 @@ public class Menu extends MouseAdapter {
         if (Game.gameState == Game.STATE.GAME) {
             UniversalHandler.setup(Game.clientManager);
             UniversalHandler.isServer = false;
-            handler.addObject(new Ball(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BALL, GameObject.entities));
-
+            UniversalHandler.getThingHandler().addEntityObject(new Ball(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BALL, GameObject.entities));
         }
     }
 
